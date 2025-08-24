@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VICENDA — Журнал</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="header">
+    <a class="logo-wrap" href="index.html"><img class="logo" src="logo.svg" alt="VICENDA"/></a>
+    <nav class="nav"><a href="index.html#shop">Магазин</a><a href="lookbook.html">Лукбук</a><a href="gallery.html">Галерея</a><a href="journal.html" aria-current="page">Журнал</a><a href="art.html">Арт‑объекты</a></nav>
+    <div class="actions">
+      <button class="icon-btn" id="themeBtn"><span class="icon">◐</span></button>
+      <button class="btn" id="headerAuth">Войти</button>
+      <button class="icon-btn" id="burger">☰</button>
+    </div>
+  </header>
+
+  <main class="flipbook">
+    <div class="book-container" id="book">
+      <section class="page3d" data-page="1">
+        <div class="content">
+          <h3 style="font-weight:800; letter-spacing:.02em;">VICENDA · Playboy Issue</h3>
+          <div class="img" style="background-image:url('assets/logo.svg')"></div>
+          <p><strong>AMM0 t‑shirt</strong> · 100% хлопок · вытравная шелкография · RESTOCK — never.</p>
+        </div>
+      </section>
+      <section class="page3d" data-page="2">
+        <div class="content">
+          <h3>Почему вытравка</h3>
+          <p>Удаляем пигмент ткани вместо наложения пластика. Мягко на ощупь. Стабильно к времени.</p>
+          <video controls muted style="width:100%; border-radius:12px; background:#000"></video>
+        </div>
+      </section>
+      <section class="page3d" data-page="3">
+        <div class="content">
+          <h3>Съёмка дроппа</h3>
+          <div class="img" style="background-image:url('assets/logo.svg')"></div>
+          <p>Силуэт — первичен. Свет — инструмент. Фон — молчит.</p>
+        </div>
+      </section>
+    </div>
+    <div class="controls"><button class="btn ghost" id="prev">←</button><button class="btn" id="next">→</button></div>
+  </main>
+
+  <dialog class="auth" id="authDialog">
+    <form method="dialog" id="authForm">
+      <h3>Войти / Зарегистрироваться</h3>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Пароль" required>
+      <div class="actions">
+        <button class="btn" value="ok">Продолжить</button>
+        <button class="btn ghost" value="cancel">Отмена</button>
+      </div>
+      <small>Демо без сервера: данные сохраняются локально.</small>
+    </form>
+  </dialog>
+
+  <script src="script.js"></script>
+  <script>
+  (function(){
+    const pages = Array.from(document.querySelectorAll('.page3d'));
+    let index = 0;
+    function layout(){
+      pages.forEach((p,i)=>{
+        const offset = i - index;
+        const isMobile = window.matchMedia('(max-width: 720px)').matches;
+        if(isMobile){
+          p.style.transform = 'none';
+          p.style.zIndex = String(10 - Math.abs(offset));
+          p.style.display = (i===index)?'block':'none';
+        }else{
+          p.style.display = 'block';
+          p.style.transform = `translateX(${Math.min(offset*15, 0)}px) rotateY(${Math.max(-offset*150, -180)}deg)`;
+          p.style.zIndex = String(10 - Math.abs(offset));
+        }
+      });
+    }
+    layout();
+    window.addEventListener('resize', layout);
+    document.getElementById('prev').addEventListener('click', ()=>{ index = Math.max(0, index-1); layout(); });
+    document.getElementById('next').addEventListener('click', ()=>{ index = Math.min(pages.length-1, index+1); layout(); });
+  })();
+  </script>
+</body>
+</html>

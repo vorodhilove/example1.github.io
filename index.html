@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VICENDA — strange/adequate wear</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="header">
+    <a class="logo-wrap" href="index.html"><img class="logo" src="logo.svg" alt="VICENDA"/></a>
+    <nav class="nav"><a href="#shop">Магазин</a><a href="lookbook.html">Лукбук</a><a href="gallery.html">Галерея</a><a href="journal.html">Журнал</a><a href="art.html">Арт‑объекты</a></nav>
+    <div class="actions">
+      <button class="icon-btn" id="themeBtn" title="Тема"><span class="icon">◐</span></button>
+      <button class="btn" id="authBtn">Войти</button>
+      <button class="icon-btn" id="burger" aria-expanded="false" aria-label="Меню">☰</button>
+    </div>
+  </header>
+
+  <div class="drawer" id="drawer">
+    <a href="#shop">Магазин</a>
+    <a href="lookbook.html">Лукбук</a>
+    <a href="gallery.html">Галерея</a>
+    <a href="journal.html">Журнал</a>
+    <a href="art.html">Арт‑объекты</a>
+    <a href="#about">Философия</a>
+    <div class="auth-actions"><button class="btn" id="drawerAuth">Войти</button></div>
+  </div>
+
+  <main>
+    <section class="hero" style="display:grid; gap:12px; padding:20px 0">
+      <h1 class="brand-word" id="brandWord"></h1>
+      <p style="color:var(--muted); max-width:760px">Чёрно‑белая дисциплина. Вещь как предмет/идея. Restock — never.</p>
+    </section>
+
+    <section id="shop" class="grid"></section>
+
+    <section id="about" style="margin-top:24px">
+      <h3>Философия</h3>
+      <p>Силуэт важнее шума. Носибельность важнее эго. Вытравка вместо пластика. Чёрное/белое как язык против лишнего.</p>
+    </section>
+
+    <section class="marquee" aria-label="Цитаты">
+      <div class="marquee__inner" id="marqueeInner">
+        <div class="q">«Кроваво-черное ничто пустилось вить систему клеток, связанных внутри, клеток, связанных внутри, клеток в едином стебле и явственно, до жути на фоне тьмы ввысь белым бил фонтан» <span class="author">— В. Набоков</span></div>
+        <div class="q">«Иногда я бываю печален…» <span class="author">— Н. Гумилёв</span></div>
+        <div class="q">Дисциплина формы — свобода идеи. <span class="author">— VICENDA</span></div>
+        <div class="q">Чёрное/Белое — язык против лишнего. <span class="author">— VICENDA</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <small>© VICENDA — t.me/FSSKvicenda · tiktok.com/@vicendaa</small>
+  </footer>
+
+  <dialog class="auth" id="authDialog">
+    <form method="dialog" id="authForm">
+      <h3>Войти / Зарегистрироваться</h3>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Пароль" required>
+      <div class="actions">
+        <button class="btn" value="ok">Продолжить</button>
+        <button class="btn ghost" value="cancel">Отмена</button>
+      </div>
+      <small>Демо без сервера: данные сохраняются локально.</small>
+    </form>
+  </dialog>
+
+  <dialog class="collage" id="collageDialog">
+    <div id="collageGrid" class="collage-grid"></div>
+    <form method="dialog" style="margin-top:10px;text-align:center">
+      <button class="btn ghost" value="close">Закрыть</button>
+    </form>
+  </dialog>
+
+  <button class="secret-btn" id="secretBtn" title="Случайный коллаж">?</button>
+
+  <script src="script.js"></script>
+  <script>
+    // render shop cards
+    const shop = document.querySelector('#shop');
+    if (shop){
+      shop.innerHTML = catalog.map(it=>`
+        <div class="card">
+          <div class="ph img" style="background-image:url('${it.img}')"></div>
+          <div class="meta">
+            <h4>${it.title}</h4>
+            <p>${it.category} · ${it.color} · ${it.size}</p>
+            <p>${it.price} ₽</p>
+          </div>
+        </div>`).join('');
+    }
+  </script>
+</body>
+</html>

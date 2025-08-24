@@ -1,0 +1,104 @@
+
+:root{
+  --bg:#0b0b0b; --text:#f4f4f4; --muted:#9a9a9a; --card:#111; --border:#2a2a2a;
+}
+:root.light{
+  --bg:#fafafa; --text:#0b0b0b; --muted:#5a5a5a; --card:#fff; --border:#e5e5e5;
+}
+*{ box-sizing:border-box }
+html,body{ margin:0; padding:0; background:var(--bg); color:var(--text); font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+a{ color:inherit; text-decoration:none }
+img{ max-width:100%; display:block }
+.header{ position:sticky; top:0; z-index:30; display:flex; align-items:center; justify-content:space-between; gap:14px;
+  padding:12px 16px; background:var(--bg); border-bottom:1px solid var(--border); }
+.logo{ height:28px; filter: invert(0) grayscale(1); }
+:root.light .logo{ filter: invert(1) grayscale(1); }
+.nav{ display:flex; gap:16px; align-items:center }
+.nav a{ padding:8px 10px; border-radius:10px }
+.nav a[aria-current="page"]{ outline:1px dashed var(--border) }
+.actions{ display:flex; gap:8px; align-items:center }
+.btn, .icon-btn{ cursor:pointer; border:1px solid var(--border); background:var(--card); color:var(--text);
+  border-radius:12px; padding:10px 14px; }
+.icon-btn{ width:40px; height:40px; display:grid; place-items:center }
+main{ width:min(1100px, 96vw); margin:20px auto; }
+.grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:14px }
+.card{ border:1px solid var(--border); background:var(--card); border-radius:14px; overflow:hidden }
+.ph.img{ height:220px; background:#111 center/cover no-repeat; position:relative; filter: blur(6px); transition:.35s; }
+.ph.img::after{ content:"🔒"; position:absolute; inset:auto 10px 10px auto; background:rgba(0,0,0,.6); color:#fff; padding:4px 8px; border-radius:8px; font-size:14px; }
+.card:hover .ph.img{ filter: blur(0); transform: scale(1.03); }
+.meta{ padding:12px; color:var(--muted) }
+.row{ display:flex; flex-wrap:wrap; align-items:center }
+footer{ padding:24px; color:var(--muted); text-align:center; border-top:1px solid var(--border) }
+
+/* drawer */
+@media (max-width: 720px){
+  .header{ padding:8px 10px }
+  .logo{ height:24px }
+  .nav{ display:none }
+}
+.drawer{ position:fixed; top:0; left:0; height:100dvh; width:min(78vw, 320px); background:var(--card); border-right:1px solid var(--border);
+  translate:-100% 0; transition: translate .3s ease; padding:16px; display:flex; flex-direction:column; gap:10px; z-index:50; }
+.drawer.open{ translate:0 0; }
+.drawer .auth-actions{ margin-top:auto; display:flex; gap:8px }
+#burger{ display:none }
+@media (max-width: 720px){
+  #burger{ display:block }
+}
+
+/* marquee */
+.marquee{ position:relative; overflow:hidden; border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--card);
+  mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent 100%);
+}
+.marquee__inner{ display:flex; gap:40px; white-space:nowrap; will-change: transform; padding:8px 0; animation: marquee 25s linear infinite }
+@keyframes marquee{ to{ transform: translateX(-50%) } }
+.marquee .q{ opacity:.9; font-size:.92rem }
+.marquee .author{ color:var(--muted); margin-left:6px }
+
+/* brand word */
+.brand-word{ font-size: clamp(38px, 9vw, 120px); font-weight:800; letter-spacing:.04em; line-height:.95; display:flex; gap:.05em }
+.brand-letter{ position:relative; display:inline-block; padding:.02em .04em; transition: transform .25s ease }
+.brand-letter:hover{ transform: translateY(-3px) rotate(-1deg) }
+.brand-letter::after{
+  content:""; position:absolute; inset:0; background-position:center; background-size:cover; opacity:0; transition: opacity .25s ease, transform .25s ease;
+  -webkit-mask-image: linear-gradient(#000 0 0); mask-image: linear-gradient(#000 0 0);
+}
+.brand-letter:hover::after{ opacity:1; transform: scale(1.03) }
+
+/* auth modal */
+dialog.auth{ border:1px solid var(--border); background:var(--card); color:var(--text); border-radius:14px; padding:18px; width:min(420px, 92vw) }
+.auth form{ display:grid; gap:10px }
+.auth input{ width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border); background:transparent; color:var(--text) }
+.auth .actions{ display:flex; justify-content:space-between }
+.auth small{ color:var(--muted) }
+
+/* collage */
+.secret-btn{ position:fixed; bottom:18px; right:18px; width:40px; height:40px; border-radius:12px; border:1px solid var(--border);
+  background:var(--card); color:var(--text); cursor:pointer; opacity:.7; z-index:40 }
+.secret-btn:hover{ opacity:1; transform: translateY(-2px) }
+dialog.collage{ border:1px solid var(--border); background:var(--card); color:var(--text); border-radius:16px; padding:14px; width:min(900px, 96vw) }
+dialog.collage::backdrop{ backdrop-filter: blur(8px) }
+.collage-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap:8px }
+.collage-grid img{ width:100%; height:160px; object-fit:cover; border-radius:8px; filter: grayscale(1) }
+
+/* lookbook */
+.lb-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:14px }
+@media (max-width: 900px){ .grid, .lb-grid{ grid-template-columns: repeat(2, 1fr) } }
+@media (max-width: 560px){ .grid, .lb-grid{ grid-template-columns: 1fr } }
+
+/* journal flipbook (desktop) */
+.flipbook{ perspective: 2000px }
+.book-container{ position:relative; margin:24px auto; width:min(980px, 96vw); height:min(680px, 75vh) }
+.page3d{ position:absolute; width:100%; height:100%; transform-origin:left center; background:var(--card); border:1px solid var(--border);
+  border-radius:14px; overflow:hidden; box-shadow: 0 30px 60px rgba(0,0,0,.35);
+  background-image: radial-gradient(100% 10% at 30% 0%, rgba(255,255,255,.09), transparent 60%),
+                    linear-gradient(120deg, rgba(255,255,255,.08), transparent 40%, rgba(255,255,255,.08) 60%, transparent 85%);
+  will-change: transform;
+}
+.page3d .content{ padding:24px; display:grid; gap:10px }
+.page3d .img{ height:320px; border-radius:10px; background:#111 center/cover no-repeat; filter: blur(6px); transition:.35s }
+.page3d:hover .img{ filter: blur(0); transform: scale(1.02) }
+.controls{ display:flex; justify-content:space-between; gap:8px; margin-top:12px }
+@media (max-width: 720px){
+  .flipbook{ perspective: none }
+  .page3d{ position:relative; transform:none !important }
+}

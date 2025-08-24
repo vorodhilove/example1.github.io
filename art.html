@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VICENDA — Арт‑объекты</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .scene-wrap{ width:min(1200px,96vw); margin:24px auto; border:1px solid var(--border); border-radius:16px; background:var(--card); overflow:hidden }
+    canvas{ display:block; width:100%; height:70vh }
+    .scene-top{ display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid var(--border) }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a class="logo-wrap" href="index.html"><img class="logo" src="logo.svg" alt="VICENDA"/></a>
+    <nav class="nav"><a href="index.html#shop">Магазин</a><a href="lookbook.html">Лукбук</a><a href="gallery.html">Галерея</a><a href="journal.html">Журнал</a><a href="art.html" aria-current="page">Арт‑объекты</a></nav>
+    <div class="actions"><button class="icon-btn" id="themeBtn"><span class="icon">◐</span></button><button class="btn" id="headerAuth">Войти</button><button class="icon-btn" id="burger">☰</button></div>
+  </header>
+  <main class="scene-wrap">
+    <div class="scene-top"><h2>Арт‑объекты · сценка</h2><div><small>вращай мышью · колёсико — масштаб</small></div></div>
+    <div id="threeRoot"></div>
+  </main>
+  <dialog class="auth" id="authDialog">
+    <form method="dialog" id="authForm">
+      <h3>Войти / Зарегистрироваться</h3>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Пароль" required>
+      <div class="actions">
+        <button class="btn" value="ok">Продолжить</button>
+        <button class="btn ghost" value="cancel">Отмена</button>
+      </div>
+      <small>Демо без сервера: данные сохраняются локально.</small>
+    </form>
+  </dialog>
+  <script src="script.js"></script>
+  <script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://unpkg.com/three@0.158.0/examples/js/loaders/FontLoader.js"></script>
+  <script src="https://unpkg.com/three@0.158.0/examples/js/geometries/TextGeometry.js"></script>
+  <script>
+    const root = document.getElementById('threeRoot');
+    const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
+    root.appendChild(renderer.domElement);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, 2, 0.1, 100);
+    camera.position.set(0, 2.2, 7);
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    const light = new THREE.DirectionalLight(0xffffff, 1); light.position.set(3,4,5);
+    scene.add(light, new THREE.AmbientLight(0xffffff, .35));
+
+    const matBW = new THREE.MeshStandardMaterial({ color: 0x111111, metalness:.4, roughness:.2 });
+    const matWhite = new THREE.MeshStandardMaterial({ color: 0xffffff, metalness:.2, roughness:.6 });
+
+    const plane = new THREE.Mesh(new THREE.PlaneGeometry(20,20), new THREE.MeshStandardMaterial({ color: 0x111111, roughness:.9, metalness:0 }));
+    plane.rotation.x = -Math.PI/2; plane.position.y = -0.01; scene.add(plane);
+
+    const geo1 = new THREE.TorusKnotGeometry(0.6, 0.2, 120, 16);
+    const m1 = new THREE.Mesh(geo1, matWhite); m1.position.set(-2, 0.6, 0); scene.add(m1);
+    const geo2 = new THREE.IcosahedronGeometry(0.8, 1);
+    const m2 = new THREE.Mesh(geo2, matBW); m2.position.set(2, 0.8, 0); scene.add(m2);
+
+    const loader = new THREE.FontLoader();
+    loader.load('https://unpkg.com/three@0.158.0/examples/fonts/helvetiker_bold.typeface.json', (font)=>{
+      const textGeo = new THREE.TextGeometry('VICENDA', { font, size: 0.7, height: 0.2, curveSegments: 8, bevelEnabled: true, bevelThickness: .03, bevelSize: .02, bevelSegments: 2 });
+      textGeo.center();
+      const textMesh = new THREE.Mesh(textGeo, matWhite);
+      textMesh.position.y = 0.2;
+      scene.add(textMesh);
+      animateList.push(()=> { textMesh.rotation.y += 0.004; });
+    });
+
+    const animateList = [()=>{ m1.rotation.x+=.005; m1.rotation.y+=.008; }, ()=>{ m2.rotation.y+=.006; }];
+
+    function onResize(){
+      const w = root.clientWidth; const h = Math.max(420, window.innerHeight*.6);
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h; camera.updateProjectionMatrix();
+    }
+    window.addEventListener('resize', onResize);
+    onResize();
+
+    function tick(){ requestAnimationFrame(tick); animateList.forEach(fn=>fn()); controls.update(); renderer.render(scene, camera); }
+    tick();
+  </script>
+</body>
+</html>

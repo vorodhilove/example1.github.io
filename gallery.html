@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VICENDA — Галерея</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="header">
+    <a class="logo-wrap" href="index.html"><img class="logo" src="logo.svg" alt="VICENDA"/></a>
+    <nav class="nav"><a href="index.html#shop">Магазин</a><a href="lookbook.html">Лукбук</a><a href="gallery.html" aria-current="page">Галерея</a><a href="journal.html">Журнал</a><a href="art.html">Арт‑объекты</a></nav>
+    <div class="actions">
+      <button class="icon-btn" id="themeBtn"><span class="icon">◐</span></button>
+      <button class="btn" id="headerAuth">Войти</button>
+      <button class="icon-btn" id="burger">☰</button>
+    </div>
+  </header>
+
+  <div class="drawer" id="drawer">
+    <a href="index.html#shop">Магазин</a>
+    <a href="lookbook.html">Лукбук</a>
+    <a href="gallery.html" aria-current="page">Галерея</a>
+    <a href="journal.html">Журнал</a>
+    <a href="art.html">Арт‑объекты</a>
+    <div class="auth-actions"><button class="btn" id="drawerAuth">Войти</button></div>
+  </div>
+
+  <main>
+    <h2>Галерея</h2>
+    <div class="grid" id="galGrid"></div>
+  </main>
+
+  <dialog class="auth" id="authDialog">
+    <form method="dialog" id="authForm">
+      <h3>Войти / Зарегистрироваться</h3>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Пароль" required>
+      <div class="actions">
+        <button class="btn" value="ok">Продолжить</button>
+        <button class="btn ghost" value="cancel">Отмена</button>
+      </div>
+      <small>Демо без сервера: данные сохраняются локально.</small>
+    </form>
+  </dialog>
+
+  <script src="script.js"></script>
+  <script>
+    const tg = "https://cdn4.telesco.pe/file/Jekqhx92JWD5j7Ft15uNFxZiSnFhBPsSFohLd0_OGRzZUqK_cqemkWDShoayqP70bkbiS0SvpHSsbgMi3rSeTcAevPXtdqbzWZ6XyWbfZZiB-iHA7A1exI52G2fQzzNZvuppI7kTa8BDo0lNeWRaPp1YTW0dshxqrLJONOsipi8RF2Unup9izsmKrorNiGPct6Eva8_lkunrV7e8i1HDj7LkGwBq-o5QQroQ4oPg5Fdq0j-g4Qg8QZMWLDRpAbObkX8F_nH4eQwOcmKdO3Zn8opwNXukCqxY1UIAcBPmLAgIIC0vHRYAl3VhdxfQeSs7kyWKzkZLWnhDIFjCyrKRlQ.jpg";
+    const images = Array.from({length:12}, _=>tg);
+    const grid = document.getElementById('galGrid');
+    grid.innerHTML = images.map(src=>`
+      <div class="card">
+        <div class="ph img" style="background-image:url('${src}')"></div>
+      </div>`).join('');
+  </script>
+</body>
+</html>
